@@ -1,12 +1,10 @@
 @echo off
 setlocal enabledelayedexpansion
-
 echo.
 echo ***********************************
 echo      WinRAR Activator by Adish     
 echo ***********************************
 echo.
-
 :: Check for administrator privileges
 net session >nul 2>&1
 if %errorLevel% neq 0 (
@@ -15,7 +13,6 @@ if %errorLevel% neq 0 (
     pause
     exit /b 1
 )
-
 :: Check for WinRAR installation in default directories
 set "WinRARPath=%ProgramFiles%\WinRAR"
 if not exist "%WinRARPath%" (
@@ -27,10 +24,8 @@ if not exist "%WinRARPath%" (
     pause
     exit /b 1
 )
-
 echo [*] Activating WinRAR. Please wait...
 echo.
-
 :: Create registration key file
 (
     echo RAR registration data
@@ -45,7 +40,6 @@ echo.
     echo 0c17f1f30844937f2ab000335773972ed5676439aec1fe5b601c96
     echo 6445f5a3abb8ee3b6e7f04533b5630222e65e0cae70d1245876275
 ) > "%WinRARPath%\rarreg.key" 2>nul
-
 :: Verify creation
 if exist "%WinRARPath%\rarreg.key" (
     echo.
@@ -59,6 +53,5 @@ if exist "%WinRARPath%\rarreg.key" (
     echo [*] ERROR: Failed to create registration key.
     echo [*] Access denied. Make sure to run the script as Administrator.
 )
-
 pause
 endlocal
