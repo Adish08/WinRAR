@@ -1,22 +1,40 @@
 @echo off
+:: ==========================================
+:: Auto-Elevate: Request Administrator Privileges
+:: ==========================================
+>nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
+if '%errorlevel%' NEQ '0' (
+    echo Requesting administrative privileges...
+    goto UACPrompt
+) else (
+    goto gotAdmin
+)
+
+:UACPrompt
+    echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\getadmin.vbs"
+    echo UAC.ShellExecute "%~s0", "", "", "runas", 1 >> "%temp%\getadmin.vbs"
+    "%temp%\getadmin.vbs"
+    exit /B
+
+:gotAdmin
+    if exist "%temp%\getadmin.vbs" del "%temp%\getadmin.vbs"
+    pushd "%CD%"
+    CD /D "%~dp0%"
+
+:: ==========================================
+:: WinRAR Activator by Adish
+:: ==========================================
 setlocal enabledelayedexpansion
 echo.
 echo ***********************************
 echo      WinRAR Activator by Adish     
 echo ***********************************
 echo.
-:: Check for administrator privileges
-net session >nul 2>&1
-if %errorLevel% neq 0 (
-    echo * ERROR: This script must be run as Administrator.
-    echo   Right-click the script and select "Run as Administrator".
-    pause
-    exit /b 1
-)
+
 :: Check for WinRAR installation in default directories
 set "WinRARPath=%ProgramFiles%\WinRAR"
 if not exist "%WinRARPath%" (
-    set "WinRARPath=%ProgramFiles%\WinRAR"
+    set "WinRARPath=%ProgramFiles(x86)%\WinRAR"
 )
 if not exist "%WinRARPath%" (
     echo [*] ERROR: WinRAR installation not found in default directories.
@@ -26,6 +44,7 @@ if not exist "%WinRARPath%" (
 )
 echo [*] Activating WinRAR. Please wait...
 echo.
+
 :: Create registration key file
 (
     echo RAR registration data
@@ -40,12 +59,12 @@ echo.
     echo 0c17f1f30844937f2ab000335773972ed5676439aec1fe5b601c96
     echo 6445f5a3abb8ee3b6e7f04533b5630222e65e0cae70d1245876275
 ) > "%WinRARPath%\rarreg.key" 2>nul
+
 :: Verify creation
 if exist "%WinRARPath%\rarreg.key" (
     echo.
     echo [+] SUCCESS: WinRAR Activated!
-    echo [*] License key installed in:
-    echo "%WinRARPath%"
+    echo [*] License key installed in: "%WinRARPath%"
     echo.
     echo You can now use WinRAR without limitations!
 ) else (
